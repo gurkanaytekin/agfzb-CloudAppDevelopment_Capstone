@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,6 +15,21 @@
 </head>
 
     <body>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Gurkan Dealership</a>
+                <div class="collapse navbar-collapse">
+                    <ul style="justify-content:left;" class="navbar-nav">
+                        <li class="navbar-brand">
+                            <a class="nav-link" href="{% url 'djangoapp:about' %}">About Us</a>
+                        </li>
+                        <li class="navbar-brand">
+                            <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact Us</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     <!-- Remove this line the first time you edit this file -->
      This is the index page of your Django app!
     <!--Add a nav bar here -->
