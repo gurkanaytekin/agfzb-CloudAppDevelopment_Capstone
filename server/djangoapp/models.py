@@ -21,7 +21,23 @@ from django.utils.timezone import now
 # - __str__ method to print a car make object
 
 
-# <HINT> Create a plain Python class `CarDealer` to hold dealer data
+# A plain Python class to hold dealer data
+class CarDealer:
+    def __init__(self, address, city, full_name, id, lat, long, short_name, st, state, zip):
+        self.address = address
+        self.city = city
+        self.full_name = full_name  # Full name of dealership
+        self.id = id  # Dealership id
+        self.lat = lat
+        self.long = long
+        self.short_name = short_name
+        self.st = st  # State alpha code
+        self.state = state  # Full state name
+        self.zip = zip
+        self.idx = 0
+
+    def __str__(self):
+        return self.full_name + ", " + self.state
 
 
 # <HINT> Create a plain Python class `DealerReview` to hold review data
