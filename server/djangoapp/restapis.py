@@ -11,10 +11,14 @@ from ibm_watson.natural_language_understanding_v1 import Features, SentimentOpti
 # Function for making HTTP GET requests
 def get_request(url, api_key=False, **kwargs):
     print(f"GET from {url}")
+    iAmApiKey = 'x81ChxTVxsVH0729dhy1CpDndHXgxxj6pX6YQg0vYQKB'
     if api_key:
         # Basic authentication GET
         try:
-            response = requests.get(url, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer eyJraWQiOiIyMDIzMTAwODA4MzUiLCJhbGciOiJSUzI1NiJ9.eyJpYW1faWQiOiJJQk1pZC02OTUwMDA1WUI3IiwiaWQiOiJJQk1pZC02OTUwMDA1WUI3IiwicmVhbG1pZCI6IklCTWlkIiwianRpIjoiNDNhNTRjOTctZjcxNi00NjlkLTk5MDYtOGExNmJkOGQ5ZTBkIiwiaWRlbnRpZmllciI6IjY5NTAwMDVZQjciLCJnaXZlbl9uYW1lIjoiR8O8cmthbiIsImZhbWlseV9uYW1lIjoiQVlURUvEsE4iLCJuYW1lIjoiR8O8cmthbiBBWVRFS8SwTiIsImVtYWlsIjoiaWJtY2xvdWRndXJrYW4xMEBnbWFpbC5jb20iLCJzdWIiOiJpYm1jbG91ZGd1cmthbjEwQGdtYWlsLmNvbSIsImF1dGhuIjp7InN1YiI6ImlibWNsb3VkZ3Vya2FuMTBAZ21haWwuY29tIiwiaWFtX2lkIjoiSUJNaWQtNjk1MDAwNVlCNyIsIm5hbWUiOiJHw7xya2FuIEFZVEVLxLBOIiwiZ2l2ZW5fbmFtZSI6IkfDvHJrYW4iLCJmYW1pbHlfbmFtZSI6IkFZVEVLxLBOIiwiZW1haWwiOiJpYm1jbG91ZGd1cmthbjEwQGdtYWlsLmNvbSJ9LCJhY2NvdW50Ijp7InZhbGlkIjp0cnVlLCJic3MiOiJkZDk1MjQ1ODQ3MjI0MTM0YjRlZDJiM2M0NWZkZWY4NCIsImZyb3plbiI6dHJ1ZX0sImlhdCI6MTY5NzcwMDc5NSwiZXhwIjoxNjk3NzA0Mzk1LCJpc3MiOiJodHRwczovL2lhbS5jbG91ZC5pYm0uY29tL2lkZW50aXR5IiwiZ3JhbnRfdHlwZSI6InVybjppYm06cGFyYW1zOm9hdXRoOmdyYW50LXR5cGU6YXBpa2V5Iiwic2NvcGUiOiJpYm0gb3BlbmlkIiwiY2xpZW50X2lkIjoiZGVmYXVsdCIsImFjciI6MSwiYW1yIjpbInB3ZCJdfQ.Hku_LI_jHrx02XkOkd7B_IwwOHCnQyhCI-zEVUF27N1m7Vc9W_kZKaSxRlYGf4c0a__os6K26v_0XcC8NjRtjFGAWdc7nyFzezjJy4OkdNyyDW35MkSXyXHbZkgpY7X-3oX3UM0D6LE2ORFGdT_hwrlfntCPIi3CSLIVwYlJxwKnf507CEkPWqbscXaBkFGTugycxhiu58tK0CtZf7w_Lkh1ZrKUDr2XlW85grJTL09LAdF0motnPbz9o9llSbWoxym9syICtZ0SrNhuuMp4YDEHU3fXgP_BggXTCGzYr4Bxp8a5vBShmrw-7of5IamQ11vRY6X6Qm_UEXZUK-kB-Q'},
+            headers = {"Content-Type": "application/x-www-form-urlencoded"}
+            tokenResponse = requests.post('https://iam.cloud.ibm.com/identity/token',  headers=headers, data={ "grant_type": "urn:ibm:params:oauth:grant-type:apikey", "apikey": iAmApiKey})
+            tokenRes = tokenResponse.json()
+            response = requests.get(url, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer '+tokenRes.get("access_token")+''},
                                     params=kwargs)
         except:
             print("An error occurred while making GET request. ")
