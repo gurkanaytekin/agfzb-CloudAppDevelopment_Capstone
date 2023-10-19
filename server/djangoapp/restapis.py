@@ -1,4 +1,4 @@
-#from decouple import config
+from decouple import config
 import os
 import requests
 import json
@@ -118,8 +118,8 @@ def get_dealer_reviews_from_cf(url, dealer_id):
                     dealership=dealership, id=id, name=name, purchase=purchase, review=review_content)
 
             # Analysing the sentiment of the review object's review text and saving it to the object attribute "sentiment"
-            #review_obj.sentiment = analyze_review_sentiments(review_obj.review)
-            #print(f"sentiment: {review_obj.sentiment}")
+            review_obj.sentiment = analyze_review_sentiments(review_obj.review)
+            print(f"sentiment: {review_obj.sentiment}")
 
             # Saving the review object to the list of results
             results.append(review_obj)
@@ -135,8 +135,8 @@ def analyze_review_sentiments(review_text):
             url = os.environ['WATSON_NLU_URL']
             api_key = os.environ["WATSON_NLU_API_KEY"]
     except KeyError:
-        url = config('WATSON_NLU_URL')
-        api_key = config('WATSON_NLU_API_KEY')
+        url = "https://api.au-syd.natural-language-understanding.watson.cloud.ibm.com/instances/c6e2ede9-a0b9-418e-9fa5-bc7fc70d1604"
+        api_key = "rNkcvHe09DQnxvNoQpAL969ftCWdhNj3smrUIucbv8aL"
 
     version = '2021-08-01'
     authenticator = IAMAuthenticator(api_key)
