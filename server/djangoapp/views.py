@@ -121,9 +121,11 @@ def login_request(request):
 
 def get_dealer_details(request, dealer_id):
     context = {}
+    reviews = {}
     if request.method == "GET":
-        url = 'https://9bebcb01.eu-de.apigw.appdomain.cloud/api/review'
-        reviews = get_dealer_reviews_from_cf(url, dealer_id=dealer_id)
+        url = "https://1e63e06a-4d04-4e8b-8c5b-3091203f4fac-bluemix.cloudantnosqldb.appdomain.cloud/reviews/_all_docs?include_docs=true"
+        reviews = get_dealer_reviews_from_cf(url, dealer_id)
+        #reviews = get_dealer_reviews_from_cf(url, dealership=dealer_id)
         context = {
             "reviews":  reviews, 
             "dealer_id": dealer_id
@@ -138,7 +140,7 @@ def add_review(request, dealer_id):
     if request.user.is_authenticated:
         # GET request renders the page with the form for filling out a review
         if request.method == "GET":
-            url = f"https://5b93346d.us-south.apigw.appdomain.cloud/dealerships/dealer-get?dealerId={dealer_id}"
+            url = "https://5b93346d.us-south.apigw.appdomain.cloud/dealerships/dealer-get?dealerId={dealer_id}"
             # Get dealer details from the API
             context = {
                 "cars": CarModel.objects.all(),
