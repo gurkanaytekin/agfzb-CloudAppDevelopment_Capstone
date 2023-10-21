@@ -183,3 +183,20 @@ def get_dealer_by_id(url, dealer_id):
     # Call get_request with the dealer_id param
     dealer = get_dealers_from_cf_by_id(url, dealer_id)
     return dealer
+
+def post_request(url, json_payload, **kwargs):
+    print(f"POST to {url}")
+    try:
+        iAmApiKey = 'mDsFamWdqwjivRebkJavKJZnVx5qtnADXR9grdrMH_id'
+        headersToken = {"Content-Type": "application/x-www-form-urlencoded"}
+        tokenResponse = requests.post('https://iam.cloud.ibm.com/identity/token',  headers=headersToken, data={ "grant_type": "urn:ibm:params:oauth:grant-type:apikey", "apikey": iAmApiKey})
+        tokenRes = tokenResponse.json()
+        response = requests.post(url, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer '+tokenRes.get("access_token")+''}, json=json_payload)
+    except:
+        print("An error occurred while making POST request. ")
+    status_code = response.status_code
+    print(f"With status {status_code}")
+
+    return response
+
+

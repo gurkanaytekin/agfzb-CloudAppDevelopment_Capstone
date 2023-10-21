@@ -10,7 +10,7 @@ from datetime import datetime
 import logging
 import json
 
-from djangoapp.restapis import get_dealer_by_id, get_dealer_reviews_from_cf, get_dealers_from_cf
+from djangoapp.restapis import get_dealer_by_id, get_dealer_reviews_from_cf, get_dealers_from_cf, post_request
 from .models import CarModel
 
 # Get an instance of a logger
@@ -144,7 +144,7 @@ def add_review(request, dealer_id):
             url = "https://1e63e06a-4d04-4e8b-8c5b-3091203f4fac-bluemix.cloudantnosqldb.appdomain.cloud/dealerships/_all_docs?include_docs=true"
             # Get dealer details from the API
             context = {
-                "cars": CarModel.objects.all(),
+                "cars": CarModel.CAR_CHOICES,
                 "dealer": get_dealer_by_id(url, dealer_id=dealer_id),
             }
             return render(request, 'djangoapp/add_review.html', context)
@@ -159,10 +159,9 @@ def add_review(request, dealer_id):
             review["purchase"] = form.get("purchasecheck")
             if review["purchase"]:
                 review["purchase_date"] = datetime.strptime(form.get("purchasedate"), "%m/%d/%Y").isoformat()
-            car = CarModel.objects.get(pk=form["car"])
-            review["car_make"] = car.car_make.name
-            review["car_model"] = car.name
-            review["car_year"] = car.year
+            review["car_make"] = "Forester"
+            review["car_model"] = "Subaru"
+            review["car_year"] = "2022"
             
             # If the user bought the car, get the purchase date
             if form.get("purchasecheck"):
@@ -170,11 +169,11 @@ def add_review(request, dealer_id):
             else: 
                 review["purchase_date"] = None
 
-            url = "https://9bebcb01.eu-de.apigw.appdomain.cloud/api/review"  # API Cloud Function route
+            url = "https://1e63e06a-4d04-4e8b-8c5b-3091203f4fac-bluemix.cloudantnosqldb.appdomain.cloud/reviews"  # API Cloud Function route
             json_payload = {"review": review}  # Create a JSON payload that contains the review data
 
             # Performing a POST request with the review
-            result = post_request(url, json_payload, dealerId=dealer_id)
+            result = post_request(url, review, dealerId=dealer_id)
             if int(result.status_code) == 200:
                 print("Review posted successfully.")
 
