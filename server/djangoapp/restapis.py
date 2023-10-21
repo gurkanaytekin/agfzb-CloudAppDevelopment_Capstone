@@ -62,6 +62,25 @@ def get_dealers_from_cf(url):
 
     return results
 
+def get_dealers_from_cf_by_id(url, dealer_id):
+    dealer_obj = {}
+    json_result = get_request(url, api_key=True)
+    # Retrieve the dealer data from the response
+    dealers = json_result["rows"]
+    # For each dealer in the response
+    for dealer in dealers:
+        # Get its data in `doc` object
+        dealer_doc = dealer["doc"]
+        if(dealer_doc["id"] != dealer_id):
+            continue
+        # Create a CarDealer object with values in `doc` object
+        dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
+                               id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
+                               short_name=dealer_doc["short_name"],
+                               st=dealer_doc["st"], state=dealer_doc["state"], zip=dealer_doc["zip"])
+
+    return dealer_obj
+
 
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
 # def get_dealer_by_id_from_cf(url, dealerId):
@@ -160,4 +179,7 @@ def analyze_review_sentiments(review_text):
 
     return sentiment_label
 
-
+def get_dealer_by_id(url, dealer_id):
+    # Call get_request with the dealer_id param
+    dealer = get_dealers_from_cf_by_id(url, dealer_id)
+    return dealer

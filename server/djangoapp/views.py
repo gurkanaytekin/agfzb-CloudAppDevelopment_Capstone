@@ -10,7 +10,8 @@ from datetime import datetime
 import logging
 import json
 
-from djangoapp.restapis import get_dealer_reviews_from_cf, get_dealers_from_cf
+from djangoapp.restapis import get_dealer_by_id, get_dealer_reviews_from_cf, get_dealers_from_cf
+from .models import CarModel
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -140,7 +141,7 @@ def add_review(request, dealer_id):
     if request.user.is_authenticated:
         # GET request renders the page with the form for filling out a review
         if request.method == "GET":
-            url = "https://5b93346d.us-south.apigw.appdomain.cloud/dealerships/dealer-get?dealerId={dealer_id}"
+            url = "https://1e63e06a-4d04-4e8b-8c5b-3091203f4fac-bluemix.cloudantnosqldb.appdomain.cloud/dealerships/_all_docs?include_docs=true"
             # Get dealer details from the API
             context = {
                 "cars": CarModel.objects.all(),
